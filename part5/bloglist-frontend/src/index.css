@@ -1,0 +1,13 @@
+div.success {
+  border: 2px solid green;
+  background-color: gray;
+  color: green;
+  padding: 10px;
+}
+
+div.error {
+  border: 2px solid red;
+  background-color: gray;
+  color: red;
+  padding: 10px;
+}
