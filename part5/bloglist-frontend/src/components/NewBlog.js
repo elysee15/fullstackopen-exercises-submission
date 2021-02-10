@@ -10,7 +10,7 @@ const NewBlog = ({ handleNewBlog, title, handleTitle, url, handleUrl, author, ha
           type="text"
           value={author}
           onChange={handleAuthor}
-        />{' '}
+        />
         <br />
         url: <input type="text" value={url} onChange={handleUrl} /> <br />
         <input type="submit" value="create" /> <br />

@@ -22,7 +22,8 @@ const App = () => {
   useEffect(() => {
     async function fetchBlog() {
       const blogs = await blogService.getAll()
-      setBlogs(blogs)
+      const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
+      setBlogs(sortedBlogs)
     }
     const loggedUser = window.localStorage.getItem('user')
     if (loggedUser) {
@@ -52,7 +53,7 @@ const App = () => {
     }
   }
   const handleLogout = (e) => {
-    window.localStorage.removeItem('user')
+    window.localStorage.removeItem('user');
   }
   const handleNewBlog = async (e) => {
     e.preventDefault()
@@ -75,6 +76,34 @@ const App = () => {
         setErrorMessage(null)
       }, 5000)
     }
+  }
+
+  const handleDelete = async (blog) => {
+
+    try {
+      if(window.confirm(`Do you want to delete ${blog.title} by ${blog.author} ?`)){
+        const response = await blogService.remove(blog.id);
+        setBlogs(blogs.filter(b => b.id !== blog.id));
+        setMessage({ data: `Blog ${blog.title} by ${blog.author} deleted successfully`, type: 'success'});
+        setTimeout(() => setMessage(null), 5000);
+      }
+    } catch (e) {
+      setMessage({ data: 'Your a not authorized to delete this blog', type: 'error'});
+      setTimeout(() => setMessage(null), 5000);
+    }
+    return;
+  }
+
+  const handleLike = async ({ id, likes, username, name, url, title }) => {
+    const newBlog = {
+      likes: ++likes,
+      username,
+      name,
+      url,
+      title
+    }
+    const response = await blogService.update(id, newBlog);
+    setBlogs(blogs.map(blog => id === response.id ? response : blog));
   }
 
   const loggedInPage = () => {
@@ -104,8 +133,8 @@ const App = () => {
             title={title}
           />
         </Togglable>
-        {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
+        {blogs.map((blog, index) => (
+          <Blog key={index} blog={blog} handleLike={() => handleLike(blog)} handleDelete={() => handleDelete(blog)}/>
         ))}
       </>
     )

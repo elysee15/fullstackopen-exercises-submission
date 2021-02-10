@@ -17,10 +17,22 @@ const create = async data => {
   const config = {
     headers: { Authorization: setToken() },
   }
-  console.log('config', config)
-  console.log('data', data)
   const request = await axios.post(baseUrl, data, config)
   return request.data
 }
 
-export default { getAll, create }
+const update = async (id, data) => {
+  const request = await axios.put(`${baseUrl}/${id}`, data);
+  return request.data;
+}
+
+const remove = async (id) => {
+  console.log(id)
+  const config = {
+    headers: { Authorization: setToken() },
+  }
+  const request = await axios.delete(`${baseUrl}/${id}`, config);
+  return request.data;
+}
+
+export default { getAll, create, update, remove };
