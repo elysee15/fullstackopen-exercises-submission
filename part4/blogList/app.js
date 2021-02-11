@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -32,6 +33,11 @@ app.use(middleware.tokenExtractor)
 app.use("/api/blogs", blogRouter);
 app.use("/api/users", userRouter);
 app.use("/api/login", loginRouter);
+
+if (process.env.NODE_ENV === 'test'){
+  const testingRouter = require('./controllers/testing');
+  app.use("/api/testing/reset", testingRouter);
+}
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

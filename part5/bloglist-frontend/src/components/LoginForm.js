@@ -8,9 +8,10 @@ const LoginForm = ({ handleUsername, handlePassword, handleLogin, username, pass
       <h2>Log in to application</h2>
       <form onSubmit={handleLogin}>
         username{' '}
-        <input type="text" value={username} onChange={handleUsername} /> <br />
+        <input id="username" type="text" value={username} onChange={handleUsername} /> <br />
         password{' '}
         <input
+          id="password"
           type="password"
           value={password}
           onChange={handlePassword}

@@ -12,12 +12,12 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
   const [message, setMessage] = useState(null)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
-  const [visible, setVisible] = useState(false)
+
+  const blogFormRef = React.createRef()
 
   useEffect(() => {
     async function fetchBlog() {
@@ -57,7 +57,7 @@ const App = () => {
   }
   const handleNewBlog = async (e) => {
     e.preventDefault()
-
+    blogFormRef.current.toggleVisibility();
     try {
       const blog = await blogService.create({ title, author, url })
       setBlogs(blogs.concat(blog))
@@ -65,7 +65,7 @@ const App = () => {
         data: ` a new blog ${blog.title} by ${blog.author} `,
         type: 'success',
       })
-      setVisible(false)
+      // setVisible(false)
       setTimeout(() => setMessage(null), 5000)
       setTitle('')
       setAuthor('')
@@ -73,7 +73,7 @@ const App = () => {
     } catch (e) {
       setMessage({ data: `${e}`, type: 'error' })
       setTimeout(() => {
-        setErrorMessage(null)
+        setMessage(null)
       }, 5000)
     }
   }
@@ -88,7 +88,7 @@ const App = () => {
         setTimeout(() => setMessage(null), 5000);
       }
     } catch (e) {
-      setMessage({ data: 'Your a not authorized to delete this blog', type: 'error'});
+      setMessage({ data: 'You are not authorized to delete this blog', type: 'error'});
       setTimeout(() => setMessage(null), 5000);
     }
     return;
@@ -120,8 +120,7 @@ const App = () => {
         <h2>Create new</h2>
         <Togglable
           buttonLabel="new blog"
-          visible={visible}
-          setVisible={setVisible}
+          ref={blogFormRef}
         >
           <NewBlog
             handleAuthor={handleAuthor}
