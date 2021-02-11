@@ -114,7 +114,9 @@ describe("Blog app", function () {
           .and("have.css", "border-style", "solid");
       });
 
-      it("checks that the blogs are ordered according to likes", function () {});
+      it("checks that the blogs are ordered according to likes", function () {
+          
+      });
     });
   });
 });
